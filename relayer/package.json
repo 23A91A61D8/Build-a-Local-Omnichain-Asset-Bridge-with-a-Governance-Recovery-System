@@ -1,0 +1,15 @@
+{
+  "name": "relayer",
+  "version": "1.0.0",
+  "description": "Omnichain Bridge Relayer Service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "ethers": "^6.16.0"
+  }
+}

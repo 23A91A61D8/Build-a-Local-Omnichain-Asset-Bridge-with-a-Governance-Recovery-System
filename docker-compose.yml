@@ -1,0 +1,33 @@
+services:
+
+  chain-a:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npx hardhat node --port 8545"
+    ports:
+      - "8545:8545"
+
+  chain-b:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npx hardhat node --port 9545"
+    ports:
+      - "9545:9545"
+
+  relayer:
+    build: ./relayer
+    restart: on-failure
+    environment:
+      DEPLOYER_PRIVATE_KEY: ${DEPLOYER_PRIVATE_KEY}
+      CHAIN_A_RPC_URL: http://chain-a:8545
+      CHAIN_B_RPC_URL: http://chain-b:9545
+      CONFIRMATION_DEPTH: 3
+    volumes:
+      - ./relayer/data:/usr/src/app/data
+    depends_on:
+      - chain-a
+      - chain-b
